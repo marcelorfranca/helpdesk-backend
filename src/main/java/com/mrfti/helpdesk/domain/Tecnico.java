@@ -12,7 +12,7 @@ import com.mrfti.helpdesk.domain.enums.Perfil;
 public class Tecnico extends Pessoa {
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy = "tecnico") // um tecnico para muitos chamados 
+	@OneToMany(mappedBy = "tecnico") // um tecnico para muitos chamados
 	private List<Chamado> chamados = new ArrayList<>();
 
 	public Tecnico() {
@@ -31,7 +31,5 @@ public class Tecnico extends Pessoa {
 	public void setChamados(List<Chamado> chamados) {
 		this.chamados = chamados;
 	}
-	
-	
-	
+
 }
