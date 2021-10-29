@@ -1,22 +1,45 @@
 package com.mrfti.helpdesk.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mrfti.helpdesk.domain.enums.Perfil;
 
-public abstract class Pessoa {
+@Entity	
+public abstract class Pessoa implements Serializable {
+	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // autoincremente
 	protected Integer id; // protected somente as classes Cliente e Tecnico terao acesso
 	protected String nome;
+	
+	@Column(unique = true)
 	protected String cpf;
+	
+	@Column(unique = true)
 	protected String email;
 	protected String senha;
+	
+	@ElementCollection(fetch = FetchType.EAGER) // qdo der get no banco a lista de perfis devera vir com o usuario
+	@CollectionTable(name = "PERFIS")// Vai criar uma tabela no bd com os perfis
 	protected Set<Integer> perfis  = new HashSet<>(); // Set impede dois valores iguais 
 	// hashset evita erro de ponteiro nulo
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataCriacao = LocalDate.now();
 	
 	public Pessoa() {

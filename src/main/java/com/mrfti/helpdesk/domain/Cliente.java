@@ -3,12 +3,21 @@ package com.mrfti.helpdesk.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cliente extends Pessoa {
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
+import com.mrfti.helpdesk.domain.enums.Perfil;
+
+@Entity
+public class Cliente extends Pessoa {
+	private static final long serialVersionUID = 1L;
+
+	@OneToMany(mappedBy = "cliente") // um cliente para muitos chamados 
 	private List<Chamado> chamados = new ArrayList<>();
 
 	public Cliente() {
 		super();
+		addPerfil(Perfil.CLIENTE); // sempre que um novo cliente for criado ja atribui o perfil
 	}
 
 	public Cliente(Integer id, String nome, String cpf, String email, String senha) {
