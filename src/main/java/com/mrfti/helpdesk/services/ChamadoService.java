@@ -1,5 +1,6 @@
 package com.mrfti.helpdesk.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,15 @@ public class ChamadoService {
 		return repository.save(newChamado(objDTO));
 	}
 
-	private Chamado newChamado(ChamadoDTO obj) {
+	
+	public Chamado update(Integer id, @Valid ChamadoDTO objDTO) {
+		objDTO.setId(id);
+		Chamado oldObj = findById(id);
+		oldObj = newChamado(objDTO); // chamado o metodo para verificar se já existe o id para o update
+		return repository.save(oldObj);
+	}
+	
+	private Chamado newChamado(ChamadoDTO obj) { // usado no create e update
 		Tecnico tecnico = tecnicoService.findById(obj.getTecnico());
 		Cliente cliente = clienteService.findById(obj.getCliente());
 
@@ -49,6 +58,10 @@ public class ChamadoService {
 			chamado.setId(obj.getId());
 		}
 
+		if(obj.getStatus().equals(2)) { // se no update o usuario encerrar a os gera a data de fechamento
+			chamado.setDataFechamento(LocalDate.now());
+		}
+		
 		chamado.setTecnico(tecnico);
 		chamado.setCliente(cliente);
 		chamado.setPrioridade(Prioridade.toEnum(obj.getPrioridade()));
@@ -58,5 +71,7 @@ public class ChamadoService {
 
 		return chamado;
 	}
+
+	
 
 }
