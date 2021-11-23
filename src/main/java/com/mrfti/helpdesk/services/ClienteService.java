@@ -40,7 +40,7 @@ public class ClienteService {
 
 	public Cliente create(ClienteDTO objDTO) { // converter as infos para novo Cliente
 		objDTO.setId(null); // assegurando que o ID virá nulo, senao ele pensará que é um update
-		objDTO.setSenha(encoder.encode(objDTO.getSenha()));
+		objDTO.setSenha(encoder.encode(objDTO.getSenha())); // o encode cria a encriptação  no BD
 		validaPorCpfEEmail(objDTO);
 		Cliente newObj = new Cliente(objDTO);
 		return repository.save(newObj);
